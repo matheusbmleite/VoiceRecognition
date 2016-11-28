@@ -14,6 +14,9 @@ String str = "";
 int red = 9;
 int green = 10;
 int blue = 11;
+//Initialising the Temperature sensor
+int tempPin = A2;
+
 
 void setup() {
   Serial.begin(9600);     // opens serial port, sets data rate to 9600 bps
@@ -32,10 +35,14 @@ void loop() {
   if (Serial.available() > 0) {
     // read the incoming byte:
     str = Serial.readString();
-    const char *cstr = str.c_str(); // converting str to const char*
-    if (str == "calculator mode") {
+    if (str.equalsIgnoreCase("calculator mode")) {
       writeMessage("Calculator mode ON");
       calculatorMode();
+    }else if(str.equalsIgnoreCase("temperature")) {
+      temperature();
+    }else if(str.equalsIgnoreCase("who is the best teacher") || str.equalsIgnoreCase("who's the best teacher")) {
+      writeMessage("Ross Bigelow of course!"); 
+      delay(2000); 
     }
   }
   delay(1000);
@@ -109,7 +116,8 @@ void calculatorMode() {
           delay(2000);
           break;
         }
-        if (str.equalsIgnoreCase("plus") || str.equalsIgnoreCase("times") || str.equalsIgnoreCase("x") || str.equalsIgnoreCase("minus") || str.equalsIgnoreCase("-") || str.equalsIgnoreCase("divided")) {
+        if (str.equalsIgnoreCase("plus") || str.equalsIgnoreCase("times") || str.equalsIgnoreCase("x") 
+        || str.equalsIgnoreCase("minus") || str.equalsIgnoreCase("-") || str.equalsIgnoreCase("divided")) {
           operation = str;
           writeMessage("The operation is: "+operation);
           delay(1000);
@@ -151,4 +159,11 @@ void calculatorMode() {
       }
     }
   }
+}
+
+void temperature() {
+  int temperature = analogRead(tempPin);
+  float temperatureC = (5.0 * temperature * 100.0) / 1024;
+  writeMessage("The temperature is: "+String(temperatureC)+" C");
+  delay(2000);
 }
