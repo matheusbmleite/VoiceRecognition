@@ -2,9 +2,10 @@
 #include <Wire.h>
 #include <LCD.h>
 #include <LiquidCrystal_I2C.h>
+#include "DHT.h"
 
-//Define address for the Serial LCD display.
-#define I2C_ADDR  0x3f  //If 0x3f doesn't work change this to 0x27
+
+#define I2C_ADDR  0x3f  //Defining address for the Serial LCD display.
 #define BACKLIGHT_PIN  3
 
 //Initialise the Serial LCD.
@@ -14,15 +15,19 @@ String str = "";
 int red = 9;
 int green = 10;
 int blue = 11;
-//Initialising the Temperature sensor
-int tempPin = A2;
+int tempPin = A2; //Initializing the Temperature sensor
+int buzzer = 5;
+int DHT11Pin = 4;
+DHT dht(DHT11Pin, DHT11); //Initializing the Humidity sensor
 
 
 void setup() {
   Serial.begin(9600);     // opens serial port, sets data rate to 9600 bps
+  dht.begin(); // Starting the humidity sensor
   pinMode(red, OUTPUT);
   pinMode(green, OUTPUT);
   pinMode(blue, OUTPUT);
+  pinMode(buzzer, OUTPUT);
   lcd.begin (16, 2);    //Initalize the LCD.
   lcd.setBacklightPin(3, POSITIVE); //Setup the backlight.
   lcd.setBacklight(HIGH); //Switch on the backlight.
@@ -43,6 +48,14 @@ void loop() {
     }else if(str.equalsIgnoreCase("who is the best teacher") || str.equalsIgnoreCase("who's the best teacher")) {
       writeMessage("Ross Bigelow of course!"); 
       delay(2000); 
+    }else if(str.equalsIgnoreCase("play me a song")) {
+      writeMessage("Of course");
+      delay(1000);
+      playSong();
+    }else if(str.equalsIgnoreCase("humidity")) {
+      humidity();
+    }    else {
+      writeMessage(" Sorry, I don't have this module implemented yet :(");  
     }
   }
   delay(1000);
@@ -166,4 +179,48 @@ void temperature() {
   float temperatureC = (5.0 * temperature * 100.0) / 1024;
   writeMessage("The temperature is: "+String(temperatureC)+" C");
   delay(2000);
+}
+
+void playSong() {
+  tone(buzzer, 510,100);
+  delay(450);
+  tone(buzzer, 380,100);
+  delay(400);
+  tone(buzzer, 320,100);
+  delay(500);
+  tone(buzzer, 440,100);
+  delay(300);
+  tone(buzzer, 480,80);
+  delay(330);
+  tone(buzzer, 450,100);
+  delay(150);
+  tone(buzzer, 430,100);
+  delay(300);
+  tone(buzzer, 380,100);
+  delay(200);
+  tone(buzzer, 660, 80);
+  delay(200);
+  tone(buzzer, 760, 50);
+  delay(150);
+  tone(buzzer, 860, 100);
+  delay(300);
+  tone(buzzer, 700, 80);
+  delay(150);
+  tone(buzzer, 760, 50);
+  delay(350);
+  tone(buzzer, 660, 80);
+  delay(300);
+  tone(buzzer, 520, 80);
+  delay(150);
+  tone(buzzer, 580, 80);
+  delay(150);
+  tone(buzzer, 480, 80);
+  delay(500);
+}
+
+void humidity() {
+  float humidity = dht.readHumidity();
+  writeMessage("The humidity is: "+String(humidity)+"%");
+  delay(2000);
+
 }
