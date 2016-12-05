@@ -89,8 +89,8 @@ void writeMessage(String message) {
 void calculatorMode() {
   digitalWrite(blue, HIGH);
   bool exit = false;
-  int first;
-  int second;
+  float first;
+  float second;
   String operation;
   while (!exit) {
     str = Serial.readString();
@@ -111,9 +111,9 @@ void calculatorMode() {
         digitalWrite(blue, LOW);
         break;
       }
-      if (str.toInt() != 0) {
-        first = str.toInt();
-        writeMessage("You said: "+String(first));
+      if (str.toFloat() != 0) {
+        first = str.toFloat();
+        writeMessage("You said: "+String(first, 2));
         delay(2000);
         writeMessage("Tell me the operation (+,/,*,-)");
         //-------------------------Reading the operation
@@ -147,25 +147,25 @@ void calculatorMode() {
         delay(2000);
         break;
       }
-      if (str.toInt() != 0) {
-        second = str.toInt();
-        writeMessage("You said: "+String(second));
+      if (str.toFloat() != 0) {
+        second = str.toFloat();
+        writeMessage("You said: "+String(second, 3));
         delay(2000);
         if (operation.equalsIgnoreCase("plus")) {
-          int result = first + second;
-          writeMessage(String(first)+" "+operation+" "+String(second)+" = "+String(result));
+          float result = first + second;
+          writeMessage(String(first, 3)+" "+operation+" "+String(second, 3)+" = "+String(result, 3));
           delay(3000);
         } else if (operation.equalsIgnoreCase("x") || operation.equalsIgnoreCase("times") ) {
-          int result = first * second;
-          writeMessage(String(first)+" "+operation+" "+String(second)+" = "+String(result));
+          float result = first * second;
+          writeMessage(String(first, 3)+" "+operation+" "+String(second, 3)+" = "+String(result, 3));
           delay(3000);
         } else if (operation.equalsIgnoreCase("-") || operation.equalsIgnoreCase("minus")) {
-          int result = first - second;
-          writeMessage(String(first)+" "+operation+" "+String(second)+" = "+String(result));
+          float result = first - second;
+          writeMessage(String(first, 3)+" "+operation+" "+String(second, 3)+" = "+String(result, 3));
           delay(3000);
         } else if (operation.equalsIgnoreCase("divided")) {
-          double result = double(first) / double(second);
-          writeMessage(String(first)+" "+operation+" "+String(second)+" = "+String(result,3));
+          float result = first / second;
+          writeMessage(String(first, 3)+" "+operation+" "+String(second, 3)+" = "+String(result,3));
           delay(3000);
         }
 
