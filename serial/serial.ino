@@ -22,7 +22,7 @@ DHT dht(DHT11Pin, DHT11); //Initializing the Humidity sensor
 
 
 void setup() {
-  Serial.begin(9600);     // opens serial port, sets data rate to 9600 bps
+  Serial.begin(9600); // opens serial port, sets data rate to 9600 bps
   dht.begin(); // Starting the humidity sensor
   pinMode(red, OUTPUT);
   pinMode(green, OUTPUT);
@@ -36,9 +36,9 @@ void setup() {
 
 void loop() {
   writeMessage("I'm SmartINO, ask me anything :)");
-  // send data only when you receive data:
+  //send data only when it receives data
   if (Serial.available() > 0) {
-    // read the incoming byte:
+    //read the incoming byte
     str = Serial.readString();
     if (str.equalsIgnoreCase("calculator mode")) {
       writeMessage("Calculator mode ON");
@@ -61,6 +61,11 @@ void loop() {
   delay(1000);
 }
 
+/*
+* Simple method that gets the size of the message
+* and calculates the better way to display it in a
+* 16x2 LCD display
+*/
 void writeMessage(String message) {
   lcd.clear();
   lcd.setCursor(0, 0);
@@ -86,6 +91,10 @@ void writeMessage(String message) {
   }
 }
 
+/*
+* Method that simulates a calculator with the 
+* baisc operations
+*/
 void calculatorMode() {
   digitalWrite(blue, HIGH);
   bool exit = false;
@@ -118,7 +127,6 @@ void calculatorMode() {
         writeMessage("Tell me the operation (+,/,*,-)");
         //-------------------------Reading the operation
         
-        
         while (Serial.available() <= 0) {
           //waiting for the speechRecognition
         }
@@ -139,8 +147,9 @@ void calculatorMode() {
       writeMessage("Tell me the 2nd number");
       while (Serial.available() <= 0) {
         //waiting for the speechRecognition
-      }
-      str = Serial.readString();  //THE CODE BELOW THIS COMMENT IS NOT SOMETHING I'M PROUD OF
+      } 
+      //---------------------------Reading the second number
+      str = Serial.readString(); 
       if (str == "exit") {
         writeMessage("Calculator mode OFF");
         digitalWrite(blue, LOW);
@@ -151,6 +160,8 @@ void calculatorMode() {
         second = str.toFloat();
         writeMessage("You said: "+String(second, 3));
         delay(2000);
+
+        //performing the calculation with the numbers and operation given
         if (operation.equalsIgnoreCase("plus")) {
           float result = first + second;
           writeMessage(String(first, 3)+" "+operation+" "+String(second, 3)+" = "+String(result, 3));
@@ -174,6 +185,10 @@ void calculatorMode() {
   }
 }
 
+
+/*
+* Method that reads and displays the current temperature
+*/
 void temperature() {
   int temperature = analogRead(tempPin);
   float temperatureC = (5.0 * temperature * 100.0) / 1024;
@@ -181,6 +196,9 @@ void temperature() {
   delay(2000);
 }
 
+/*
+* Method that uses the buzzer to play a simple song
+*/
 void playSong() {
   tone(buzzer, 510,100);
   delay(450);
@@ -218,6 +236,9 @@ void playSong() {
   delay(500);
 }
 
+/*
+* Method that reads and displays the current humidity as a percentage
+*/
 void humidity() {
   float humidity = dht.readHumidity();
   writeMessage("The humidity is: "+String(humidity)+"%");
