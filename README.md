@@ -1,7 +1,7 @@
 # VoiceRecognition
 A simple project that works as a proof of concepts using Arduino Leonardo, [321 Maker Shield](https://github.com/321maker) and the [Speech Recognition Library](https://github.com/Uberi/speech_recognition).
 
-#Implemented Commands
+# Implemented Commands
 - Calculator Mode
 	* When the device recognizes the command "calculator mode" it tunrs into a simple calculator and asks you for 3 inputs: the first number, the operation and the second number.
 
@@ -13,5 +13,5 @@ A simple project that works as a proof of concepts using Arduino Leonardo, [321 
 
 - Easter Eggs
 	* "Play me a song" command.
-	* "Who's the best teacher" command. (NOTE, I'm sorry if you're a teacher and the board doesn't show your name, the name found on the code has its reasons to be there. 
+	* "Who's the best teacher" command. (NOTE, I'm sorry if you're a teacher and the board doesn't show your name, the name found on the code has its reasons to be there.) 
 
